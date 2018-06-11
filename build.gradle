@@ -37,6 +37,7 @@ compileTestKotlin {
 
 repositories {
     mavenCentral()
+    maven { url 'https://jitpack.io' }
 }
 
 
@@ -48,4 +49,7 @@ dependencies {
     compile("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     compile("org.jetbrains.kotlin:kotlin-reflect")
     testCompile('org.springframework.boot:spring-boot-starter-test')
+    compile "org.wololo:jts2geojson:0.10.0"
+    compile group: 'com.vividsolutions', name: 'jts-core', version: '1.14.0'
+    compile 'com.github.scoutant:polyline-decoder:b32557f'
 }
