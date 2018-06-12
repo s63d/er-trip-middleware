@@ -51,7 +51,7 @@ class TripSplitter {
         logger.info("Done constructing country map")
     }
 
-    private fun decodePolyline(polyline: String) = decoder.decode(polyline)
+    fun decodePolyline(polyline: String) = decoder.decode(polyline)
             .map {
                 factory.createPoint(Coordinate(it.lng, it.lat))
             }
@@ -83,7 +83,7 @@ class TripSplitter {
             if(result.lastOrNull()?.first != code)
                 result.add(code to mutableListOf(point))
         }
-        return result.map { TripContainer(trip.id.toString(), it.first, encodePoints(it.second)) }
+        return result.map { TripContainer(it.first, it.second) }
     }
 
 }
