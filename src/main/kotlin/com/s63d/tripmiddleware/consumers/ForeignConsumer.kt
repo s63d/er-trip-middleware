@@ -23,14 +23,16 @@ class ForeignConsumer(private val rabbitTemplate: RabbitTemplate) {
             InternRequest(request.id, request.vehicleWeight, computeDistance(it), request.origin)
         }.forEach {
             rabbitTemplate.convertAndSend("AT", "req", it)
-            logger.info("[→] Sent intern request")
+            logger.info("[→] Sent intern request for ${it.country}")
             logger.info("    $it")
             logger.info("")
         }
     }
 
 
-    fun computeDistance(tripLocation: List<ForeignRequestTripLocation>) : Double {
+    fun computeDistance(locations: List<ForeignRequestTripLocation>) : Double {
+        if(locations.size < 2)
+            return 0.0
 
         return 10.0
     }

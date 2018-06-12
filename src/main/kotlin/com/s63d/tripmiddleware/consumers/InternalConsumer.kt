@@ -29,7 +29,7 @@ class InternalConsumer(private val rabbitTemplate: RabbitTemplate) {
         val foreignResponse = ForeignResponse(msg.id, msg.price, msg.distance.roundToInt(), VAT, listOf(ForeignDetails(msg.rate, "Vehicle has label ${msg.label}, ${msg.rate} * ${msg.distance} (rate x distance)", Long.MIN_VALUE, Long.MAX_VALUE)))
         val key = "rich_route_${msg.dest}"
 
-        logger.info("[↑] Sent foreign response")
+        logger.info("[↑] Sent foreign response to ${msg.dest}")
         logger.info("    $foreignResponse")
         logger.info("")
         rabbitTemplate.convertAndSend(key, foreignResponse)
