@@ -1,7 +1,7 @@
 package com.s63d.tripmiddleware.producers
 
-import com.s63d.tripmiddleware.domain.intern.ForeignRequest
-import com.s63d.tripmiddleware.domain.intern.ForeignRequestTripLocation
+import com.s63d.tripmiddleware.domain.foreign.ForeignRequest
+import com.s63d.tripmiddleware.domain.foreign.ForeignRequestTripLocation
 import com.s63d.tripmiddleware.domain.Trip
 import com.s63d.tripmiddleware.utils.TripSplitter
 import org.slf4j.LoggerFactory
@@ -30,7 +30,6 @@ class ForeignProducer(private val rabbitTemplate: RabbitTemplate, private val tr
 
 
             val key = "foreign_route_$dest"
-
             logger.info("[↑] Sending request to $dest")
             logger.info("    $req")
             logger.info("")

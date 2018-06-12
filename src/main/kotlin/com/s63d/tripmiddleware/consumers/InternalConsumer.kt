@@ -19,6 +19,9 @@ class InternalConsumer(private val rabbitTemplate: RabbitTemplate) {
     @Value("\${VAT}")
     val VAT: Int = 0
 
+    @Value("\${country}")
+    lateinit var COUNTRY: String
+
     private val logger = LoggerFactory.getLogger(this::class.java)
     @RabbitListener(bindings = [QueueBinding(value = Queue("INTERN_AT_RESP"), key = ["resp"], exchange = Exchange("AT"))])
     fun handle(msg: InternResponse) {
@@ -26,7 +29,7 @@ class InternalConsumer(private val rabbitTemplate: RabbitTemplate) {
         logger.info("    $msg")
         logger.info("")
 
-        val foreignResponse = ForeignResponse(msg.id, msg.price, msg.distance.roundToInt(), VAT, listOf(ForeignDetails(msg.rate, "Vehicle has label ${msg.label}, ${msg.rate} * ${msg.distance} (rate x distance)", Long.MIN_VALUE, Long.MAX_VALUE)))
+        val foreignResponse = ForeignResponse(msg.id, msg.price, msg.distance, VAT, COUNTRY, listOf(ForeignDetails(msg.rate, "Vehicle has label ${msg.label}, ${msg.rate} * ${msg.distance} (rate x distance)", Long.MIN_VALUE, Long.MAX_VALUE)))
         val key = "rich_route_${msg.dest}"
 
         logger.info("[↑] Sent foreign response to ${msg.dest}")
