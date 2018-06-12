@@ -22,7 +22,6 @@ class ForeignProducer(private val rabbitTemplate: RabbitTemplate, private val tr
         val trips = tripSplitter.splitTrip(completeTrip)
                 .filter { it.country != COUNTRY_CODE }.groupBy { it.country }
 
-
         for(trip in trips) {
             val dest = trip.key
             val req = ForeignRequest(completeTrip.id.toString(), completeTrip.vehicle.weight, trip.value.map {

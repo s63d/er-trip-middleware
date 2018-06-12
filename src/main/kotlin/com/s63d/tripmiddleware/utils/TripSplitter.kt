@@ -82,6 +82,8 @@ class TripSplitter {
             val code = resolveCode(point)
             if(result.lastOrNull()?.first != code)
                 result.add(code to mutableListOf(point))
+            else
+                result.last().second.add(point)
         }
         return result.map { TripContainer(it.first, it.second) }
     }
