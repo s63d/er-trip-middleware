@@ -32,7 +32,7 @@ class ForeignProducer(private val rabbitTemplate: RabbitTemplate, private val tr
             }, COUNTRY_CODE)
 
 
-            val key = "test_foreign_route_$dest"
+            val key = "foreign_route_$dest"
             logger.info("Sending request to $dest ($key)")
             logger.info(req.toString())
             rabbitTemplate.convertAndSend(key, req)
