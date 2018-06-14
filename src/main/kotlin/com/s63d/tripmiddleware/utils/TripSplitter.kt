@@ -2,6 +2,7 @@ package com.s63d.tripmiddleware.utils
 
 import com.s63d.tripmiddleware.domain.Trip
 import com.s63d.tripmiddleware.domain.TripContainer
+import com.s63d.tripmiddleware.domain.intern.InternTrip
 import org.springframework.stereotype.Service
 import com.vividsolutions.jts.geom.*
 import it.rambow.master.javautils.PolylineEncoder.createEncodings
@@ -75,7 +76,7 @@ class TripSplitter {
     }
 
 
-    fun splitTrip(trip: Trip) : List<TripContainer> {
+    fun splitTrip(trip: InternTrip) : List<TripContainer> {
         val points = decodePolyline(trip.polyline)
         val result = mutableListOf<Pair<String, MutableList<Point>>>()
         for (point in points) {

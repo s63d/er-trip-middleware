@@ -3,6 +3,8 @@ package com.s63d.tripmiddleware.consumers
 import com.s63d.tripmiddleware.domain.foreign.ForeignDetails
 import com.s63d.tripmiddleware.domain.foreign.ForeignResponse
 import com.s63d.tripmiddleware.domain.intern.InternResponse
+import com.s63d.tripmiddleware.domain.intern.InternTrip
+import com.s63d.tripmiddleware.producers.ForeignProducer
 import org.slf4j.LoggerFactory
 import org.springframework.amqp.rabbit.annotation.Exchange
 import org.springframework.amqp.rabbit.annotation.Queue
@@ -11,10 +13,9 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.amqp.rabbit.core.RabbitTemplate
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
-import kotlin.math.roundToInt
 
 @Component
-class InternalConsumer(private val rabbitTemplate: RabbitTemplate) {
+class InternalConsumer(private val rabbitTemplate: RabbitTemplate, private val foreignProducer: ForeignProducer) {
 
     @Value("\${VAT}")
     val VAT: Int = 0
@@ -38,4 +39,15 @@ class InternalConsumer(private val rabbitTemplate: RabbitTemplate) {
         rabbitTemplate.convertAndSend(key, foreignResponse)
     }
 
+
+    @RabbitListener(bindings = [QueueBinding(value = Queue("INTERN_AT_COMPLETE_TRIP"), key = ["trip"], exchange = Exchange("AT"))])
+    fun handle(msg: InternTrip) {
+        logger.info("[←] Received intern complete trip #${msg.id}")
+        logger.info("    $msg")
+        logger.info("")
+        foreignProducer.processTrip(msg)
+
+        logger.info("[*] Sent requests for trip #${msg.id}")
+        logger.info("")
+    }
 }
