@@ -13,6 +13,7 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.amqp.rabbit.core.RabbitTemplate
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
+import java.util.*
 
 @Component
 class InternalConsumer(private val rabbitTemplate: RabbitTemplate, private val foreignProducer: ForeignProducer) {
@@ -30,7 +31,8 @@ class InternalConsumer(private val rabbitTemplate: RabbitTemplate, private val f
         logger.info("    $msg")
         logger.info("")
 
-        val foreignResponse = ForeignResponse(msg.id, msg.price, msg.distance, VAT, COUNTRY, listOf(ForeignDetails(msg.rate, "Vehicle has label ${msg.label}, ${msg.rate} * ${msg.distance} (rate x distance)", Long.MIN_VALUE, Long.MAX_VALUE)))
+        val ts = Calendar.getInstance().timeInMillis / 1000
+        val foreignResponse = ForeignResponse(msg.id, msg.price, msg.distance, VAT, COUNTRY, listOf(ForeignDetails(msg.rate, "Vehicle has label ${msg.label}, ${msg.rate} * ${msg.distance} (rate x distance)" ,ts, ts)))
         val key = "rich_route_${msg.dest}"
 
         logger.info("[↑] Sent foreign response to ${msg.dest}")

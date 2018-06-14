@@ -1,13 +1,7 @@
 package com.s63d.tripmiddleware
 
-import com.s63d.tripmiddleware.domain.Trip
-import com.s63d.tripmiddleware.domain.Vehicle
-import com.s63d.tripmiddleware.producers.ForeignProducer
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
-import org.springframework.scheduling.annotation.EnableScheduling
-import org.springframework.stereotype.Component
-import java.util.*
 
 @SpringBootApplication
 class TripMiddlewareApplication
