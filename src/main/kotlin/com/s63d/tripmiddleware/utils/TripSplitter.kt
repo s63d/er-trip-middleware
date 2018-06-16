@@ -17,6 +17,9 @@ import java.nio.file.Files
 import java.nio.file.Paths
 import java.util.*
 import javax.annotation.PostConstruct
+import org.springframework.core.io.ClassPathResource
+import org.springframework.util.StreamUtils
+
 
 @Service
 class TripSplitter {
@@ -31,8 +34,7 @@ class TripSplitter {
     @PostConstruct
     fun init() {
         logger.info("Loading geometries..")
-        val path = Paths.get(javaClass.getResource("/countries.geojson").toURI())
-        val bytes = Files.readAllBytes(path)
+        val bytes = StreamUtils.copyToByteArray(ClassPathResource("/countries.geojson").inputStream)
         val json = String(bytes)
         val rawCountries = GeoJSONFactory.create(json) as FeatureCollection
         val reader = GeoJSONReader()
